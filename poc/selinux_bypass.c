@@ -1,3 +1,4 @@
+/*
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -501,7 +502,7 @@ done:
     return iRet;
 }
 
-int32_t do_selinux_bypass(char* pszSepolicyPath)
+int32_t do_selinux_bypass(unsigned long kernel_base, char* pszSepolicyPath)
 {
     int32_t iRet = -1;
     uint64_t pAvcCache = 0;
@@ -555,3 +556,4 @@ done:
     policydb_destroy(&policydb);
     return iRet;
 }
+*/

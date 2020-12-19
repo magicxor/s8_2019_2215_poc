@@ -30,6 +30,7 @@ done:
     return iRet;
 }
 
+/*
 int32_t kernel_read(uint64_t pAddr, void* pRecvBuff, uint64_t ulSz)
 {
     int32_t iRet = -1;
@@ -56,6 +57,7 @@ done:
 
     return iRet;
 }
+*/
 
 uint8_t kernel_read_uchar(uint64_t pAddr)
 {
@@ -70,6 +72,7 @@ uint8_t kernel_read_uchar(uint64_t pAddr)
     return ucData;
 }
 
+/*
 uint32_t kernel_read_uint(uint64_t pAddr)
 {
     uint32_t uiData = 0;
@@ -140,3 +143,4 @@ int32_t kernel_write_ulong(uint64_t pAddr, uint64_t ulValue)
 
     return iRet;
 }
+*/

@@ -1,3 +1,4 @@
+/*
 #ifndef _SELINUX_BYPASS_H_
 #define _SELINUX_BYPASS_H_
 
@@ -13,3 +14,4 @@
 int32_t do_selinux_bypass(char* pszSepolicyPath);
 
 #endif
+*/

